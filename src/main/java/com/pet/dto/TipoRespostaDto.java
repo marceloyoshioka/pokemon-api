@@ -6,13 +6,10 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record PokemonDetalhesDto(
+public record TipoRespostaDto(
 		@JsonAlias("id") Integer id,
 		@JsonAlias("name") String nome,
-		@JsonAlias("height") Integer altura,
-		@JsonAlias("weight") Integer peso,
-		@JsonAlias("base_experience") Integer experienciaBase,
-		@JsonAlias("abilities") List<HabilidadeSlotDto> habilidades
+		@JsonAlias("pokemon") List<PokemonSlotDto> pokemons
 		) {
-
+	
 }
