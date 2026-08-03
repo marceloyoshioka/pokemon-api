@@ -22,10 +22,45 @@ public class PokemonService {
 	
 	private static final String URL = "https://pokeapi.co/api/v2/";
 	
+	private static final List<String> NOMES_POKEMON_TESTE = List.of(
+            "pikachu",
+            "charmander",
+            "charizard",
+            "bulbasaur",
+            "squirtle",
+            "eevee",
+            "snorlax",
+            "gengar",
+            "gyarados",
+            "jigglypuff",
+            "mewtwo",
+            "onix"
+    );
+	
 	public PokemonDetalhesDto buscaPokemonPorNome(String nome) {
 		String json = consumoApi.obterDados(URL+"pokemon/" +nome);
 		return conversor.obterDados(json, PokemonDetalhesDto.class);
 	}
+	
+	public List<String> buscaPokemonPorPrimeiraLetra(String letra){
+		return NOMES_POKEMON_TESTE.stream()
+				.filter(n -> letra.toLowerCase().equals(n.substring(0,1).toLowerCase()))
+				.toList();
+	}
+	
+	public List<String> retornaNomesMaiusculos(){
+		return NOMES_POKEMON_TESTE.stream()
+				.map(nome -> nome.toUpperCase())
+				.toList();
+	}
+	
+	public List<String> buscaPokemonPorPrimeiraLetraERetornaMaiusculo(String primeiraLetra){
+		return NOMES_POKEMON_TESTE.stream()
+				.filter(nome -> nome.contains(primeiraLetra))
+				.map(nome -> nome.toUpperCase())
+				.toList();
+	}
+	
 	
 	public TipoRespostaDto buscaPokemonPorTipo(String habilidade) {
 		String json = consumoApi.obterDados(URL+"ability/"+habilidade);
