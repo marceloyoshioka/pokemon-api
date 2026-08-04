@@ -21,11 +21,6 @@ public class PokemonController {
 	@Autowired
 	private PokemonService service;
 	
-	@GetMapping("/{nome}")
-	public ResponseEntity<PokemonDetalhesDto> buscaPokemon(@PathVariable String nome){
-		return ResponseEntity.ok(service.buscaPokemonPorNome(nome));
-	}
-	
 	@GetMapping("/sem-api/{letra}")
 	public ResponseEntity<List<String>> buscaPokemonPorPrimeiraLetra(@PathVariable String letra){
 		return ResponseEntity.ok(service.buscaPokemonPorPrimeiraLetra(letra));
@@ -40,6 +35,27 @@ public class PokemonController {
 	public ResponseEntity<List<String>> buscaPokemonPorPrimeiraLetraERetornaMaiusculo(
 			@PathVariable String primeiraLetra){
 		return ResponseEntity.ok(service.buscaPokemonPorPrimeiraLetraERetornaMaiusculo(primeiraLetra));
+	}
+	
+	@GetMapping("/{nome}")
+	public ResponseEntity<PokemonDetalhesDto> buscaPokemon(@PathVariable String nome){
+		return ResponseEntity.ok(service.buscaPokemonPorNome(nome));
+	}
+	
+	@GetMapping("/peso5")
+	public ResponseEntity<List<PokemonDetalhesDto>> filtraPesoDe5Pokemons(
+			@RequestParam List<String> nomes,
+			@RequestParam Long peso){
+		//exemplo URL: http://localhost:8080/pokemons/peso5?nomes=pikachu,charizard,snorlax,onix,gyarados&peso=2000
+		return ResponseEntity.ok(service.filtraPesoDe5Pokemons(nomes, peso));
+	}
+	
+	@GetMapping("/peso5/nomes")
+	public ResponseEntity<List<String>> filtraPesoDe5PokemonsRetornaNomes(
+			@RequestParam List<String> nomes,
+			@RequestParam Long peso){
+		//exemplo URL: http://localhost:8080/pokemons/peso5?nomes=pikachu,charizard,snorlax,onix,gyarados&peso=2000
+		return ResponseEntity.ok(service.filtraPesoDe5PokemonsRetornaNomes(nomes, peso));
 	}
 	
 	@GetMapping("/habilidades")

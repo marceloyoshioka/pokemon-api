@@ -1,5 +1,6 @@
 package com.pet.service;
 
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,11 +38,6 @@ public class PokemonService {
             "onix"
     );
 	
-	public PokemonDetalhesDto buscaPokemonPorNome(String nome) {
-		String json = consumoApi.obterDados(URL+"pokemon/" +nome);
-		return conversor.obterDados(json, PokemonDetalhesDto.class);
-	}
-	
 	public List<String> buscaPokemonPorPrimeiraLetra(String letra){
 		return NOMES_POKEMON_TESTE.stream()
 				.filter(n -> letra.toLowerCase().equals(n.substring(0,1).toLowerCase()))
@@ -60,6 +56,33 @@ public class PokemonService {
 				.map(nome -> nome.toUpperCase())
 				.toList();
 	}
+	
+	public PokemonDetalhesDto buscaPokemonPorNome(String nome) {
+		String json = consumoApi.obterDados(URL+"pokemon/" +nome);
+		return conversor.obterDados(json, PokemonDetalhesDto.class);
+	}
+	
+	public List<PokemonDetalhesDto> filtraPesoDe5Pokemons(List<String> nomes, Long peso){
+		
+		
+		return nomes.stream()
+				.map(nome -> buscaPokemonPorNome(nome)) // ou this::buscaPokemonPorNome
+				.filter(pokemon -> pokemon.peso() >= peso).toList();
+				
+	}
+	
+	public List<String> filtraPesoDe5PokemonsRetornaNomes(List<String> nomes, Long peso){
+		return nomes.stream()
+				.map(this::buscaPokemonPorNome)
+				.filter(pokemon -> pokemon.peso() >= peso)
+				.sorted(Comparator.comparing(PokemonDetalhesDto::peso).reversed())
+				.map( (pokemon) -> {
+					return pokemon.nome();
+				})
+				.limit(2)
+				.toList();
+	}
+	
 	
 	
 	public TipoRespostaDto buscaPokemonPorTipo(String habilidade) {
