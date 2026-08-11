@@ -3,12 +3,14 @@ package com.pet.service;
 import java.util.Comparator;
 import java.util.List;
 
+import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pet.dto.PokemonDetalhesDto;
 import com.pet.dto.PokemonSlotDto;
 import com.pet.dto.RecursoNomeadoDto;
+import com.pet.dto.ResponseStatDto;
 import com.pet.dto.TipoRespostaDto;
 
 @Service
@@ -83,8 +85,6 @@ public class PokemonService {
 				.toList();
 	}
 	
-	
-	
 	public TipoRespostaDto buscaPokemonPorTipo(String habilidade) {
 		String json = consumoApi.obterDados(URL+"ability/"+habilidade);
 		return conversor.obterDados(json, TipoRespostaDto.class);
@@ -99,6 +99,38 @@ public class PokemonService {
 				.distinct()
 				.toList();
 				
+	}
+	
+	public List<String> buscaStatsPokemon(String nome){
+		
+		PokemonDetalhesDto dto = buscaPokemonPorNome(nome);
+		
+		return dto.stats().stream()
+				.map(st -> st.stat().name())
+				.toList();
+	}
+	
+	public List<ResponseStatDto> buscaStatsPokemonRetornaNomeValor(String nome){
+		PokemonDetalhesDto dto = buscaPokemonPorNome(nome);
+		
+		return dto.stats().stream()
+				.map(st -> {
+					return new ResponseStatDto(
+							st.stat().name(),
+							st.baseStat()
+							);
+							
+				})
+				.toList();
+	}
+
+	public List<String> buscaStatRankingLimit(String stat, int limit) {
+		List<PokemonDetalhesDto> pokemons = NOMES_POKEMON_TESTE.stream()
+				.map(this::buscaPokemonPorNome)
+				.toList();
+		
+		
+		return ;
 	}
 	
 }

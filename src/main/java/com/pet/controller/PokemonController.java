@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pet.dto.PokemonDetalhesDto;
 import com.pet.dto.RecursoNomeadoDto;
+import com.pet.dto.ResponseStatDto;
 import com.pet.service.PokemonService;
 
 @RestController
@@ -63,4 +64,28 @@ public class PokemonController {
 			@RequestParam List<String> nomes){
 		return ResponseEntity.ok(service.buscaPokemonPorHabilidades(nomes));
 	}
+
+	@GetMapping("/stats/{nome}")
+	public ResponseEntity<List<String>> buscaStatsPokemon(@PathVariable String nome){
+		return ResponseEntity.ok(service.buscaStatsPokemon(nome));
+	}
+	
+	@GetMapping("/stats-valor/{nome}")
+	public ResponseEntity<List<ResponseStatDto>> buscaStatsPokemonRetornaNomeValor(@PathVariable String nome){
+		return ResponseEntity.ok(service.buscaStatsPokemonRetornaNomeValor(nome));
+	}
+	
+	@GetMapping("/ranking/{stat}")
+	public ResponseEntity<List<String>> buscaStatRankingLimit(
+			@PathVariable String stat,
+			@RequestParam int limit){
+		return ResponseEntity.ok(service.buscaStatRankingLimit(stat, limit));
+	}
 }
+
+
+
+
+
+
+

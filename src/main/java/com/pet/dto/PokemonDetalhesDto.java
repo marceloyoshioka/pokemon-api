@@ -12,7 +12,8 @@ public record PokemonDetalhesDto(
 		@JsonAlias("height") Integer altura,
 		@JsonAlias("weight") Integer peso,
 		@JsonAlias("base_experience") Integer experienciaBase,
-		@JsonAlias("abilities") List<HabilidadeSlotDto> habilidades
+		@JsonAlias("abilities") List<HabilidadeSlotDto> habilidades,
+		@JsonAlias("stats") List<StatsSlotDto> stats
 		) {
 
 }
